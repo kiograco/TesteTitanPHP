@@ -19,3 +19,18 @@ document.querySelectorAll('form[action*="service/excluir"]').forEach(function (f
         }
     });
 });
+
+var formFiltros = document.getElementById('form-filtros');
+
+if (formFiltros) {
+    formFiltros.addEventListener('submit', function (evento) {
+        var inicial = formFiltros.querySelector('#data_inicial').value;
+        var final = formFiltros.querySelector('#data_final').value;
+
+        // Datas no formato YYYY-MM-DD comparam certo como string, sem precisar converter pra Date.
+        if (inicial && final && final < inicial) {
+            evento.preventDefault();
+            alert('A data final não pode ser menor que a inicial.');
+        }
+    });
+}

@@ -6,14 +6,47 @@ use App\Core\Model;
 
 class ServiceModel extends Model
 {
-    public function listarTodos(): array
+    // Um único ponto de listagem: cada filtro só entra no WHERE se vier preenchido, e sempre por parâmetro.
+    public function listar(array $filtros = []): array
     {
-        $stmt = $this->executar(
-            'SELECT s.id_service, s.description, s.price, s.finished_at, u.name
-             FROM service s
-             JOIN user u ON u.id_user = s.user_id
-             ORDER BY s.created_at DESC'
-        );
+        $sql = 'SELECT s.id_service, s.description, s.price, s.finished_at, u.name
+                FROM service s
+                JOIN user u ON u.id_user = s.user_id';
+
+        $condicoes = [];
+        $parametros = [];
+
+        if (!empty($filtros['data_inicial'])) {
+            $condicoes[] = 's.created_at >= ?';
+            $parametros[] = $filtros['data_inicial'] . ' 00:00:00';
+        }
+
+        if (!empty($filtros['data_final'])) {
+            $condicoes[] = 's.created_at <= ?';
+            $parametros[] = $filtros['data_final'] . ' 23:59:59';
+        }
+
+        if (!empty($filtros['description'])) {
+            $condicoes[] = 's.description LIKE ?';
+            $parametros[] = '%' . $filtros['description'] . '%';
+        }
+
+        if (!empty($filtros['status'])) {
+            $condicoes[] = $filtros['status'] === 'finalizado' ? 's.finished_at IS NOT NULL' : 's.finished_at IS NULL';
+        }
+
+        if (!empty($filtros['nome_usuario'])) {
+            $condicoes[] = 'u.name LIKE ?';
+            $parametros[] = '%' . $filtros['nome_usuario'] . '%';
+        }
+
+        if ($condicoes) {
+            $sql .= ' WHERE ' . implode(' AND ', $condicoes);
+        }
+
+        $sql .= ' ORDER BY s.created_at DESC';
+
+        $stmt = $this->executar($sql, $parametros);
 
         return $stmt->fetchAll();
     }

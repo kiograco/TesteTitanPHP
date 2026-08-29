@@ -19,6 +19,14 @@
             <span><?= $dataAtual ?></span>
         </header>
 
+        <?php if (!empty($mensagemSucesso)): ?>
+            <p class="mensagem mensagem-sucesso"><?= htmlspecialchars($mensagemSucesso) ?></p>
+        <?php endif; ?>
+
+        <?php if (!empty($mensagemErro)): ?>
+            <p class="mensagem mensagem-erro"><?= htmlspecialchars($mensagemErro) ?></p>
+        <?php endif; ?>
+
         <section class="destaques">
             <div class="cartao">
                 <span>Valor total dos seus serviços</span>
@@ -41,6 +49,42 @@
                 <?php endif; ?>
             </div>
         </section>
+
+        <form id="form-filtros" method="get" action="index.php" class="filtros">
+            <input type="hidden" name="rota" value="dashboard">
+
+            <div>
+                <label for="data_inicial">De</label>
+                <input type="date" id="data_inicial" name="data_inicial" value="<?= htmlspecialchars($filtros['data_inicial']) ?>">
+            </div>
+
+            <div>
+                <label for="data_final">Até</label>
+                <input type="date" id="data_final" name="data_final" value="<?= htmlspecialchars($filtros['data_final']) ?>">
+            </div>
+
+            <div>
+                <label for="description">Serviço</label>
+                <input type="text" id="description" name="description" value="<?= htmlspecialchars($filtros['description']) ?>">
+            </div>
+
+            <div>
+                <label for="status">Status</label>
+                <select id="status" name="status">
+                    <option value="">Todos</option>
+                    <option value="pendente" <?= $filtros['status'] === 'pendente' ? 'selected' : '' ?>>Pendente</option>
+                    <option value="finalizado" <?= $filtros['status'] === 'finalizado' ? 'selected' : '' ?>>Finalizado</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="nome_usuario">Usuário</label>
+                <input type="text" id="nome_usuario" name="nome_usuario" value="<?= htmlspecialchars($filtros['nome_usuario']) ?>">
+            </div>
+
+            <button type="submit">Filtrar</button>
+            <a href="index.php?rota=dashboard">Limpar</a>
+        </form>
 
         <table class="tabela-servicos">
             <thead>
@@ -87,5 +131,7 @@
             </tbody>
         </table>
     </main>
+
+    <script src="assets/js/servico.js"></script>
 </body>
 </html>
