@@ -1,4 +1,4 @@
-    <?php
+<?php
 
 namespace App\Models;
 
@@ -40,5 +40,40 @@ class ServiceModel extends Model
         );
 
         return $stmt->fetchAll();
+    }
+
+    public function buscarPorId(int $id): array|false
+    {
+        $stmt = $this->executar('SELECT * FROM service WHERE id_service = ?', [$id]);
+
+        return $stmt->fetch();
+    }
+
+    public function criar(string $description, float $price, int $idUser): bool
+    {
+        $stmt = $this->executar(
+            'INSERT INTO service (description, price, created_at, updated_at, finished_at, user_id)
+             VALUES (?, ?, NOW(), NOW(), NULL, ?)',
+            [$description, $price, $idUser]
+        );
+
+        return $stmt->rowCount() > 0;
+    }
+
+    public function atualizar(int $id, string $description, float $price): bool
+    {
+        $stmt = $this->executar(
+            'UPDATE service SET description = ?, price = ?, updated_at = NOW() WHERE id_service = ?',
+            [$description, $price, $id]
+        );
+
+        return $stmt->rowCount() > 0;
+    }
+
+    public function excluir(int $id): bool
+    {
+        $stmt = $this->executar('DELETE FROM service WHERE id_service = ?', [$id]);
+
+        return $stmt->rowCount() > 0;
     }
 }

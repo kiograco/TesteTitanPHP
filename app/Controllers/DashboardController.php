@@ -21,6 +21,8 @@ class DashboardController extends Controller
             'servicos' => $serviceModel->listarTodos(),
             'valorTotal' => $serviceModel->somarValorPorUsuario($idUser),
             'pendentes' => $serviceModel->listarPendentesPorUsuario($idUser),
+            'mensagemSucesso' => Sessao::pegarFlash('sucesso'),
+            'mensagemErro' => Sessao::pegarFlash('erro'),
         ]);
     }
 }
