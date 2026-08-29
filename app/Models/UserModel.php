@@ -16,6 +16,13 @@ class UserModel extends Model
         return $stmt->fetch();
     }
 
+    public function buscarPorId(int $id): array|false
+    {
+        $stmt = $this->executar('SELECT * FROM user WHERE id_user = ?', [$id]);
+
+        return $stmt->fetch();
+    }
+
     public function cadastrar(string $name, string $email, string $senha): bool
     {
         $stmt = $this->executar(

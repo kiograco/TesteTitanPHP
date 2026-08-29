@@ -1,29 +1,41 @@
 <?php
 
-namespace App\Models;
+namespace App\Core;
 
-use App\Core\Model;
-
-class UserModel extends Model
+class Sessao
 {
-    public function buscarPorEmail(string $email): array|false
+    public static function iniciar(): void
     {
-        $stmt = $this->executar(
-            'SELECT * FROM user WHERE email = ? AND ativo = 1',
-            [$email]
-        );
-
-        return $stmt->fetch();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
     }
 
-    public function cadastrar(string $name, string $email, string $senha): bool
+    public static function autenticado(): bool
     {
-        $stmt = $this->executar(
-            'INSERT INTO user (name, email, password, created_at, updated_at, ativo)
-             VALUES (?, ?, ?, NOW(), NOW(), 1)',
-            [$name, $email, password_hash($senha, PASSWORD_DEFAULT)]
-        );
+        return isset($_SESSION['id_user']);
+    }
 
-        return $stmt->rowCount() > 0;
+    // Redireciona usuários não autenticados para o login.
+    public static function exigirLogin(): void
+    {
+        if (!self::autenticado()) {
+            header('Location: index.php?rota=auth/login');
+            exit;
+        }
+    }
+
+    public static function flash(string $chave, string $mensagem): void
+    {
+        $_SESSION[$chave] = $mensagem;
+    }
+
+    // Lê a mensagem e já apaga, pra não aparecer de novo num F5.
+    public static function pegarFlash(string $chave): ?string
+    {
+        $mensagem = $_SESSION[$chave] ?? null;
+        unset($_SESSION[$chave]);
+
+        return $mensagem;
     }
 }

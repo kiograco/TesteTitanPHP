@@ -3,8 +3,10 @@
 namespace App\Controllers;
 
 use App\Core\Controller;
+use App\Core\Mailer;
 use App\Core\Sessao;
 use App\Models\ServiceModel;
+use App\Models\UserModel;
 
 class ServiceController extends Controller
 {
@@ -75,6 +77,57 @@ class ServiceController extends Controller
         Sessao::flash('sucesso', 'Serviço excluído com sucesso.');
         header('Location: index.php?rota=dashboard');
         exit;
+    }
+
+    public function finalizar(): void
+    {
+        Sessao::exigirLogin();
+
+        $serviceModel = new ServiceModel();
+        $id = (int) ($_POST['id'] ?? 0);
+        $servico = $serviceModel->buscarPorId($id);
+
+        if (!$servico || $servico['finished_at'] !== null) {
+            Sessao::flash('erro', 'Serviço não encontrado ou já finalizado.');
+            header('Location: index.php?rota=dashboard');
+            exit;
+        }
+
+        $comissao = self::calcularComissao((float) $servico['price']);
+        $serviceModel->finalizar($id, $comissao);
+
+        $usuario = (new UserModel())->buscarPorId((int) $servico['user_id']);
+
+        if ($usuario) {
+            $enviado = (new Mailer())->enviarComissao(
+                $usuario['email'],
+                $servico['description'],
+                (float) $servico['price'],
+                $comissao
+            );
+
+            // O serviço já está finalizado; falha no e-mail só vira log, não desfaz nada.
+            if (!$enviado) {
+                error_log("Falha ao enviar e-mail de comissão do serviço #{$id} para {$usuario['email']}");
+            }
+        }
+
+        Sessao::flash('sucesso', 'Serviço finalizado com sucesso.');
+        header('Location: index.php?rota=dashboard');
+        exit;
+    }
+
+    private static function calcularComissao(float $valor): float
+    {
+        if ($valor > 10000) {
+            return $valor * 0.20;
+        }
+
+        if ($valor > 1000) {
+            return $valor * 0.10;
+        }
+
+        return $valor * 0.05;
     }
 
     // Validação dos dados recebidos.

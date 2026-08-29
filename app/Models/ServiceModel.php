@@ -76,4 +76,14 @@ class ServiceModel extends Model
 
         return $stmt->rowCount() > 0;
     }
+
+    public function finalizar(int $id, float $comissao): bool
+    {
+        $stmt = $this->executar(
+            'UPDATE service SET finished_at = NOW(), commission_user = ?, updated_at = NOW() WHERE id_service = ?',
+            [$comissao, $id]
+        );
+
+        return $stmt->rowCount() > 0;
+    }
 }
