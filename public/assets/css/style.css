@@ -1,0 +1,75 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f2f2f2;
+    margin: 0;
+}
+
+.caixa-login {
+    max-width: 360px;
+    margin: 80px auto;
+    background: #fff;
+    padding: 32px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .1);
+}
+
+.caixa-login h1 {
+    font-size: 20px;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.caixa-login form {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.caixa-login label {
+    font-size: 13px;
+    margin-top: 12px;
+}
+
+.caixa-login input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.caixa-login button {
+    margin-top: 20px;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background: #2563eb;
+    color: #fff;
+    cursor: pointer;
+}
+
+.caixa-login a {
+    display: block;
+    text-align: center;
+    margin-top: 16px;
+    font-size: 13px;
+}
+
+.mensagem {
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    margin-bottom: 12px;
+}
+
+.mensagem-erro {
+    background: #fde2e2;
+    color: #b91c1c;
+}
+
+.mensagem-sucesso {
+    background: #dcfce7;
+    color: #15803d;
+}
