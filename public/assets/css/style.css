@@ -73,3 +73,147 @@ body {
     background: #dcfce7;
     color: #15803d;
 }
+
+.pagina-dashboard {
+    display: flex;
+    align-items: flex-start;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 220px;
+    flex-shrink: 0;
+    background: #1e293b;
+    color: #fff;
+    min-height: 100vh;
+    padding: 24px;
+}
+
+.sidebar h2 {
+    font-size: 18px;
+    margin-bottom: 24px;
+}
+
+.sidebar p {
+    font-size: 13px;
+    margin-bottom: 24px;
+}
+
+.sidebar .botao {
+    display: block;
+    text-align: center;
+    background: #2563eb;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+}
+
+.sidebar .link-sair {
+    display: block;
+    color: #cbd5e1;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.conteudo {
+    flex: 1;
+    padding: 32px;
+}
+
+.topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.destaques {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.cartao {
+    flex: 1;
+    background: #fff;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .1);
+}
+
+.cartao span {
+    display: block;
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.cartao strong {
+    font-size: 24px;
+}
+
+.cartao ul {
+    margin: 0;
+    padding-left: 18px;
+    font-size: 13px;
+}
+
+.cartao .vazio {
+    font-size: 13px;
+    color: #666;
+    margin: 0;
+}
+
+.tabela-servicos {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .1);
+}
+
+.tabela-servicos th,
+.tabela-servicos td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    font-size: 13px;
+}
+
+.status {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.status-pendente {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.status-finalizado {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.acoes {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.form-inline {
+    display: inline;
+}
+
+.acoes button {
+    border: none;
+    background: none;
+    color: #2563eb;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 0;
+}
