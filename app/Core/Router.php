@@ -2,8 +2,7 @@
 
 namespace App\Core;
 
-// Roteador simples baseado no parâmetro GET "rota" (formato controlador/acao).
-// Evita depender de mod_rewrite/.htaccess, então funciona em qualquer servidor sem configuração extra.
+// Roteador baseado no parâmetro "rota".
 class Router
 {
     private const ROTA_PADRAO = 'auth/login';
