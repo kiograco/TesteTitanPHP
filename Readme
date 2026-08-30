@@ -1,0 +1,321 @@
+# Sistema de Controle de Serviços - JM Informática
+
+Sistema web para gerenciamento de ordens de serviço desenvolvido como teste técnico para a JM Informática.
+
+A proposta do projeto foi construir uma aplicação em **PHP puro**, utilizando orientação a objetos, arquitetura MVC, acesso ao banco com **PDO** e **JavaScript puro** no front-end, sem depender de frameworks ou Composer.
+
+O sistema permite autenticação de usuários, gerenciamento completo de ordens de serviço e finalização dos serviços com cálculo automático de comissão e envio de e-mail.
+
+---
+
+## Funcionalidades
+
+- Login de usuários.
+- Cadastro de novos usuários.
+- Dashboard com listagem de serviços.
+- Busca e filtro por descrição, status e cliente.
+- Cadastro de ordem de serviço.
+- Edição e exclusão de serviços.
+- Finalização de serviço com:
+  - cálculo da comissão do técnico;
+  - alteração do status;
+  - envio de e-mail ao cliente.
+
+---
+
+## Tecnologias utilizadas
+
+O projeto foi desenvolvido mantendo apenas recursos nativos da linguagem.
+
+- **PHP 8+** (Orientado a Objetos)
+- **Arquitetura MVC**
+- **PDO** para conexão com MySQL
+- **MySQL**
+- **JavaScript (Vanilla JS)**
+- HTML5
+- CSS3
+
+### O que não foi utilizado
+
+- Laravel
+- Symfony
+- Composer
+- Bibliotecas JavaScript
+- Frameworks CSS
+
+A ideia foi mostrar domínio dos fundamentos da linguagem e da organização de um projeto MVC sem abstrações prontas.
+
+---
+
+# Pré-requisitos
+
+Para executar o projeto localmente você precisa ter:
+
+- PHP instalado.
+- MySQL instalado.
+- Apache (ou outro servidor PHP).
+
+Se você ainda não tem um ambiente configurado, o caminho mais simples é instalar o **XAMPP**, que já traz Apache, PHP e MySQL prontos para uso.
+
+---
+
+# Instalando o XAMPP (passo a passo)
+
+Se for sua primeira vez usando PHP localmente, siga estes passos.
+
+## 1. Baixe o XAMPP
+
+Acesse o site oficial:
+
+> https://www.apachefriends.org/
+
+Baixe a versão compatível com seu sistema operacional.
+
+## 2. Instale normalmente
+
+Execute o instalador e avance mantendo as opções padrão.
+
+Durante a instalação, deixe marcados pelo menos:
+
+- Apache
+- MySQL
+- PHP
+- phpMyAdmin
+
+## 3. Abra o XAMPP Control Panel
+
+Depois da instalação, abra o **XAMPP Control Panel**.
+
+Você verá uma tela semelhante a esta:
+
+- Apache
+- MySQL
+- FileZilla
+- Mercury
+- Tomcat
+
+## 4. Inicie Apache e MySQL
+
+Clique em **Start** nos módulos:
+
+- Apache
+- MySQL
+
+Os dois devem ficar verdes indicando que estão rodando.
+
+## 5. Entenda a pasta `htdocs`
+
+O Apache serve os projetos que ficam dentro da pasta:
+
+### Windows
+
+```text
+C:\xampp\htdocs\
+```
+
+Tudo que estiver dentro dessa pasta poderá ser acessado pelo navegador usando `localhost`.
+
+Exemplo:
+
+```text
+C:\xampp\htdocs\jm-informatica
+```
+
+Será acessado em:
+
+```text
+http://localhost/jm-informatica
+```
+
+Por isso este projeto precisa ficar dentro da pasta `htdocs`.
+
+---
+
+# Configurando o banco de dados
+
+## 1. Abra o phpMyAdmin
+
+Com Apache e MySQL iniciados, acesse:
+
+```text
+http://localhost/phpmyadmin
+```
+
+## 2. Crie o banco
+
+Clique em **Novo** e crie um banco chamado:
+
+```text
+jm_informatica
+```
+
+Utilize:
+
+- Collation: `utf8mb4_general_ci`
+
+## 3. Importe o banco
+
+No banco recém-criado:
+
+- Clique na aba **Importar**.
+- Selecione o arquivo:
+
+```text
+jm_informatica.sql
+```
+
+- Clique em **Executar**.
+
+Esse arquivo cria todas as tabelas e popula os dados iniciais do sistema.
+
+## 4. Configure a conexão
+
+Abra o arquivo:
+
+```text
+config/config.php
+```
+
+Caso suas credenciais sejam diferentes do padrão do XAMPP, altere:
+
+```php
+define('DB_HOST', 'localhost');
+define('DB_NAME', 'jm_informatica');
+define('DB_USER', 'root');
+define('DB_PASS', '');
+```
+
+No XAMPP, normalmente o usuário é `root` e a senha fica vazia.
+
+---
+
+# Rodando o projeto
+
+## 1. Copie o projeto para o `htdocs`
+
+Estrutura esperada:
+
+```text
+C:\xampp\htdocs\jm-informatica\
+```
+
+## 2. Verifique a estrutura
+
+```text
+htdocs/
+└── jm-informatica/
+    ├── app/
+    ├── config/
+    ├── public/
+    ├── database/
+    └── ...
+```
+
+## 3. Abra no navegador
+
+Acesse:
+
+```text
+http://localhost/jm-informatica/public
+```
+
+A aplicação iniciará pela página de login.
+
+---
+
+# Usuários de teste
+
+Após importar o arquivo `jm_informatica.sql`, os usuários abaixo já estarão disponíveis.
+
+| Perfil | E-mail | Senha |
+|--------|--------|-------|
+| Administrador | `admin@jminformatica.com` | `123456` |
+| Técnico | `tecnico@jminformatica.com` | `123456` |
+
+> Caso os usuários tenham sido alterados no banco, utilize os dados cadastrados na tabela `users`.
+
+---
+
+# Estrutura do projeto
+
+A estrutura foi separada para manter responsabilidades bem definidas.
+
+```text
+jm-informatica/
+│
+├── app/
+│   ├── Controllers/
+│   ├── Models/
+│   ├── Views/
+│   └── Core/
+│
+├── config/
+│
+├── database/
+│
+├── public/
+│
+└── assets/
+```
+
+### `app/Controllers`
+
+Recebem as requisições da aplicação.
+
+É onde ficam as regras de fluxo, validações, chamadas aos models e definição da view que será exibida.
+
+### `app/Models`
+
+Responsáveis pela comunicação com o banco de dados.
+
+Toda consulta SQL passa pelos models utilizando **PDO** e **Prepared Statements**.
+
+### `app/Views`
+
+Contém as páginas HTML/PHP da aplicação.
+
+A ideia foi deixar a camada visual separada da lógica de negócio.
+
+### `app/Core`
+
+Parte central da arquitetura MVC.
+
+Aqui ficam classes compartilhadas, conexão com banco, roteamento e componentes básicos da aplicação.
+
+### `config`
+
+Arquivos de configuração, principalmente a conexão com o banco de dados.
+
+### `database`
+
+Scripts SQL utilizados para criar e popular o banco.
+
+### `public`
+
+Ponto de entrada da aplicação.
+
+É a pasta acessada pelo navegador e onde ficam os arquivos públicos.
+
+### `assets`
+
+Arquivos estáticos como CSS, JavaScript e imagens.
+
+---
+
+# Decisões técnicas
+
+Algumas escolhas foram intencionais por causa do objetivo do teste.
+
+- **MVC** foi utilizado para separar responsabilidades e evitar misturar HTML com regras de negócio.
+- **PHP Orientado a Objetos** foi usado em controllers, models e classes de apoio para manter o código organizado.
+- **PDO** foi escolhido por oferecer uma interface segura para acesso ao MySQL e suporte a **Prepared Statements**, reduzindo riscos de SQL Injection.
+- **JavaScript puro** foi suficiente para validações e interações da interface, sem necessidade de bibliotecas externas.
+- O projeto **não utiliza Composer nem frameworks** justamente para demonstrar implementação manual da estrutura MVC e do fluxo da aplicação.
+
+---
+
+# Observações finais
+
+O foco deste projeto foi implementar uma aplicação simples, mas organizada, cobrindo o fluxo completo de uma ordem de serviço: autenticação, gerenciamento dos serviços e finalização com cálculo de comissão e envio de e-mail.
+
+A estrutura foi pensada para ser fácil de navegar e servir como base para futuras funcionalidades, mantendo o código separado por responsabilidade e sem depender de ferramentas externas.
